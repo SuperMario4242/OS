@@ -1,7 +1,7 @@
 2 ways to compile this:
 
 1.
-	a) uncomment 2 strings in 'text.cpp':
+	a) uncomment 2 strings in 'inputs/test.cpp':
 
 	#define DEBUG_1233546_CUSTOM_PROJECT
 
@@ -11,7 +11,7 @@
 
 	g++ -std=c++11 inputs/test.cpp -o out.exe
 2.
-	a) comment 2 strings in 'text.cpp':
+	a) comment 2 strings in 'inputs/test.cpp':
 
 	//#define DEBUG_1233546_CUSTOM_PROJECT
 
