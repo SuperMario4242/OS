@@ -7,7 +7,7 @@
 
 	#undef DEBUG_1233546_CUSTOM_PROJECT
 
-	b) run command from terminal
+	b) run command from terminal:
 
 	g++ -std=c++11 inputs/test.cpp -o out.exe
 2.
