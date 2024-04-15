@@ -1,0 +1,205 @@
+#ifndef SOME_CPU_CPP
+#define SOME_CPU_CPP
+#include "CPU.hpp"
+namespace learn2024{
+	int CPU::programCounterSize = 4;
+	int CPU::programPointerSize = 8;
+	int CPU::stackPointerSize = 4;
+	CPU::CPU(){
+		CPU(NULL);
+	}
+	CPU::CPU(VirtualMemory *memory){
+		this->commands.cpu = this;
+		this->memory = memory;
+		//char tmp[programCounterSize+1] = "0000";
+		for (int i = 0; i < programCounterSize; ++i){
+			this->registers.PC[i] = '0';
+		}
+		//char tmp2[programPointerSize+1] = "00000000";
+		for (int i = 0; i < programPointerSize; ++i){
+			this->registers.PTR[i] = '0';
+		}
+		//char tmp3[stackPointerSize+1] = "0000";
+		for (int i = 0; i < stackPointerSize; ++i){
+			this->registers.SP[i] = '0';
+		}
+		this->registers.status.zero = 0;
+		this->registers.status.carry = 0;
+
+		this->registers.TI = 0;
+		this->registers.PI = 0;
+		this->registers.SI = 0;
+
+	}
+
+	std::string CPU::toString()const{
+
+		std::ostringstream oss;
+		oss << "CPU Info:\n";
+		oss << "Program Counter: ";
+		for (int i = 0; i < programCounterSize; ++i)
+			oss << (char)(registers.PC[i]);
+		oss << "\nProgram Pointer: ";
+		for (int i = 0; i < programPointerSize; ++i)
+			oss << (char)(registers.PTR[i]);
+		oss << "\nStack Pointer: ";
+		for (int i = 0; i < stackPointerSize; ++i)
+			oss << (char)(registers.SP[i]);
+		oss << "\nStatus:\n";
+		oss << "   Zero: " << (int)(registers.status.zero) << "\n";
+		oss << "   Carry: " << (int)(registers.status.carry) << "\n";
+		oss << "Timer Interrupt: " << (int)(registers.TI) << "\n";
+		oss << "Program Interrupt: " << (int)(registers.PI) << "\n";
+		oss << "System Interrupt: " << (int)(registers.SI) << "\n";
+		return oss.str();
+
+	}
+
+	void CPU::Commands::cmdADDs(){
+		char tempStackPointer[VM_ADDRESS_SIZE];
+	//	SP;
+		simpleCharCopy(cpu->registers.SP, tempStackPointer, VM_ADDRESS_SIZE);
+		char word1[ONE_WORD_SIZE];
+		cpu->memory->getWord(tempStackPointer, word1);
+												// TODO add hex check
+													// TODO add hex compare
+		hexAdd(tempStackPointer, VM_ADDRESS_SIZE, -1); // TODO (TO_CHECK) <-- attention will be required
+		
+		char word2[ONE_WORD_SIZE];
+		cpu->memory->getWord(tempStackPointer, word2);
+		
+		unsigned long int n1 = hexToInt(word1, ONE_WORD_SIZE);
+		unsigned long int n2 = hexToInt(word2, ONE_WORD_SIZE);
+		
+		unsigned long int result = n1 + n2;
+		
+		if (result < n1){
+			cpu->registers.status.carry = 1;
+		} else {
+			cpu->registers.status.carry = 0;
+		}
+		if (result == 0){
+			cpu->registers.status.zero = 1;
+		} else {
+			cpu->registers.status.zero = 0;
+		}
+		intToHex(result, ONE_WORD_SIZE, word1);
+		cpu->memory->setWord(cpu->registers.SP, word1);
+		
+	}
+	void CPU::Commands::cmdSUBs(){
+		char tempStackPointer[VM_ADDRESS_SIZE];
+		simpleCharCopy(cpu->registers.SP, tempStackPointer, VM_ADDRESS_SIZE);
+		char word1[ONE_WORD_SIZE];
+		cpu->memory->getWord(tempStackPointer, word1);
+										// TODO add hex check
+													// TODO add hex compare
+		hexAdd(tempStackPointer, VM_ADDRESS_SIZE, -1); // TODO (TO_CHECK) <-- attention will be required
+		
+		char word2[ONE_WORD_SIZE];
+		cpu->memory->getWord(tempStackPointer, word2);
+		
+		unsigned long int n1 = hexToInt(word1, ONE_WORD_SIZE);
+		unsigned long int n2 = hexToInt(word2, ONE_WORD_SIZE);
+		
+		unsigned long int result = n2 - n1;
+		
+		if (n2 < n1){
+			cpu->registers.status.carry = 1;
+		} else {
+			cpu->registers.status.carry = 0;
+		}
+		if (result == 0){
+			cpu->registers.status.zero = 1;
+		} else {
+			cpu->registers.status.zero = 0;
+		}
+		intToHex(result, ONE_WORD_SIZE, word1);
+		cpu->memory->setWord(cpu->registers.SP, word1);
+	}
+	void CPU::Commands::cmdMULs(){
+		
+	}
+	void CPU::Commands::cmdDIVs(){}
+	
+	void CPU::Commands::cmdPSHa(char arg[4]){
+		// TODO add hex compare
+		if (!hexEqual(cpu->registers.SP, LAST_STACK_ADDR, VM_ADDRESS_SIZE)){
+		//	
+			char wordToPush[ONE_WORD_SIZE];
+			cpu->memory->getWord(arg, wordToPush);
+			
+			hexAdd(cpu->registers.SP, VM_ADDRESS_SIZE, 1);
+			cpu->memory->setWord(cpu->registers.SP, wordToPush);
+		} else {
+			// TODO call interrupt with stack overflow
+		}
+	}
+	void CPU::Commands::cmdPSH (char arg[4]){
+		// TODO add hex compare
+		if (!hexEqual(cpu->registers.SP, LAST_STACK_ADDR, VM_ADDRESS_SIZE)){
+		//	
+			char wordToPush[ONE_WORD_SIZE];
+			for (int i = 0; i < ONE_WORD_SIZE; ++i){
+				if (i < ONE_WORD_SIZE - VM_ADDRESS_SIZE){
+					wordToPush[i] = '0';
+				} else {
+					wordToPush[i] = arg[i - (ONE_WORD_SIZE - VM_ADDRESS_SIZE)];
+				}
+			}
+			
+			hexAdd(cpu->registers.SP, VM_ADDRESS_SIZE, 1);
+			cpu->memory->setWord(cpu->registers.SP, wordToPush);
+		} else {
+			// TODO call interrupt with stack overflow
+		}
+	}
+	void CPU::Commands::cmdPOP (char arg[4]){
+		// TODO add hex compare
+		if (!hexEqual(cpu->registers.SP, LAST_STACK_ADDR, VM_ADDRESS_SIZE)){
+		//	
+			char wordToPush[ONE_WORD_SIZE];
+			cpu->memory->getWord(cpu->registers.SP, wordToPush);
+			
+			hexAdd(cpu->registers.SP, VM_ADDRESS_SIZE, -1);
+			cpu->memory->setWord(arg, wordToPush);
+		} else {
+			// TODO call interrupt with stack overflow
+		}
+	}
+	
+	void CPU::Commands::cmdCMP (){
+		char tmp[ONE_WORD_SIZE];
+		cpu->memory->getWord(cpu->registers.SP, tmp);
+		cmdSUBs();
+		cpu->memory->setWord(cpu->registers.SP, tmp);
+		
+	}
+	void CPU::Commands::cmdJMP (char arg[4]){
+			// TODO add hex check
+		simpleCharCopy(arg, cpu->registers.PC, VM_ADDRESS_SIZE);
+	}
+	void CPU::Commands::cmdJMPB(char arg[4]){
+			// TODO add hex check
+		if (cpu->registers.status.carry){
+			cmdJMP(arg);
+		}
+	}
+	void CPU::Commands::cmdJMPE(char arg[4]){
+			// TODO add hex check
+		if (cpu->registers.status.zero){
+			cmdJMP(arg);
+		}
+	}
+}
+/*
+std::string CPU::programCounterToString()const{
+	std::ostringstream temp;
+	for (int i = 0; i < CPU::programCounterSize; ++i){
+		temp << this->programCounter[i];
+	}
+	return temp.str();
+}
+*/
+
+#endif // SOME_CPU_CPP
