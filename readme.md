@@ -13,8 +13,8 @@
 2.
 	a) comment 2 strings in 'text.cpp':
 
-	#define DEBUG_1233546_CUSTOM_PROJECT
+	//#define DEBUG_1233546_CUSTOM_PROJECT
 
-	#undef DEBUG_1233546_CUSTOM_PROJECT
+	//#undef DEBUG_1233546_CUSTOM_PROJECT
 
 	b) run file 'createExe.bat'
