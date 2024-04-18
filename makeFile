@@ -1,0 +1,22 @@
+inputs = inputs/
+input = test
+output = out.exe
+code = code/
+objects = objects/
+
+$(output): $(objects)$(input).o $(objects)CPU.o $(objects)FuncsAndDefs.o $(objects)RM.o $(objects)VirtualMemory.o $(objects)VM.o 
+	g++ -std=c++11 $(objects)$(input).o $(objects)CPU.o $(objects)FuncsAndDefs.o $(objects)RM.o $(objects)VirtualMemory.o $(objects)VM.o -o $(output)
+$(objects)CPU.o: $(code)CPU.cpp
+	g++ -std=c++11 -c $(code)CPU.cpp  -o $(objects)CPU.o
+$(objects)FuncsAndDefs.o: $(code)FuncsAndDefs.cpp
+	g++ -std=c++11 -c $(code)FuncsAndDefs.cpp  -o $(objects)FuncsAndDefs.o
+$(objects)RM.o: $(code)RM.cpp
+	g++ -std=c++11 -c $(code)RM.cpp  -o $(objects)RM.o
+$(objects)VirtualMemory.o: $(code)VirtualMemory.cpp
+	g++ -std=c++11 -c $(code)VirtualMemory.cpp  -o $(objects)VirtualMemory.o
+$(objects)VM.o: $(code)VM.cpp
+	g++ -std=c++11 -c $(code)VM.cpp  -o $(objects)VM.o
+
+
+$(objects)$(input).o: $(inputs)$(input).cpp
+	g++ -std=c++11 -c $(inputs)$(input).cpp  -o $(objects)$(input).o
