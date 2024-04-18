@@ -12,7 +12,7 @@ namespace learn2024{
 	private:
 		CPU *cpu;
 		union {
-			char txt[2];
+			char txt[8];
 			short num;
 		} current;
 		static constexpr short constTwoLettersToShort(char letters[]){

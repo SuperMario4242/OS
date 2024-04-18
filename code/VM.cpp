@@ -7,17 +7,26 @@ namespace learn2024{
 	/*void VM::startMachine(VirtualMemory mem){
 		std::cout << "lalala123456\n";
 	}*/
+	
 	void VM::setCpu(CPU *cpu){
 		this->cpu = cpu;
 	}
 	bool VM::runCommand(char word[ONE_WORD_SIZE]){
-		for (int i = 0; i < 2; ++i){
-			current.txt[i] = word[i];
+		std::cout << "pause..";
+		char temp[9];
+		
+		std::cin.getline(temp, 9);
+//		>> temp;
+		if (temp[0] == 'n'){
+			return true;
+		}
+		for (int i = 0; i < ONE_WORD_SIZE; ++i){
+			current.txt[i] = temp[i];
 		}// interrupto apdorojimai per SI(!!!)
 		
 		std::cout << "get command:\n";
 		for (int i = 0; i < ONE_WORD_SIZE; ++i){
-			std::cout <<  word[i];
+			std::cout <<  temp[i];
 		}
 		std::cout << "\n";
 		bool needIncrementCounter = true;
@@ -35,9 +44,23 @@ namespace learn2024{
 				std::cout << "DI registered" << std::endl;
 				break;
 			case constTwoLettersToShort("PS"):
+				if (current.txt[2] == 'H'){
+			//		std::cout <<  "third";
+					if (current.txt[3] == 'a'){
+						this->cpu->commands.cmdPSHa(&current.txt[4]);
+					} else {
+						this->cpu->commands.cmdPSH(&current.txt[4]);
+					}
+				} else {
+					// TODO invalid command
+				}
+				
 				std::cout << "PS registered" << std::endl;
 				break;
 			case constTwoLettersToShort("PO"):
+				if (current.txt[2] == 'P'){
+					this->cpu->commands.cmdPOP(&current.txt[4]);
+				}
 				std::cout << "PO registered" << std::endl;
 				break;
 			case constTwoLettersToShort("TB"):
@@ -71,6 +94,7 @@ namespace learn2024{
 				std::cout << "JB registered" << std::endl;
 				break;
 			case constTwoLettersToShort("DS"):
+				this->cpu->commands.cmdDS(&current.txt[3]);
 				std::cout << "DS registered" << std::endl;
 				break;
 			case constTwoLettersToShort("RD"):
@@ -90,12 +114,7 @@ namespace learn2024{
 			// what to do in that case (?)
 		} 
 		
-		std::cout << "pause..";
-		char temp;
-		std::cin >> temp;
-		if (temp == 'n'){
-			return true;
-		}
+		
 		return false;
 	}
 }

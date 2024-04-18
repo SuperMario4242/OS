@@ -71,7 +71,7 @@ int main(){
 	cout << "st2:" << st << endl;
 
 	
-	cout << mem.toString(128);
+	cout << mem.toString(240);
 	
 	
     return 0;

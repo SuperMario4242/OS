@@ -23,7 +23,10 @@ namespace learn2024{
 			hexAdd(dataCurrent, VM_ADDRESS_SIZE, 1);
 		}
 		
-		
+		char stackCurrent[] = STACK_ADDR;
+		for (int i = 0; i < VM_ADDRESS_SIZE; ++i){
+			this->cpu->registers.SP[i] = stackCurrent[i];
+		}
 		
 		char codeCurrent[] = CODE_SEG_START_ADDR;
 		for (int i = 0; i < VM_ADDRESS_SIZE; ++i){

@@ -49,6 +49,7 @@ namespace learn2024{
 			void cmdJMP (char arg[4]);
 			void cmdJMPB(char arg[4]);
 			void cmdJMPE(char arg[4]);
+			void cmdDS (char arg[5]);
 //		private:
 	//		void lalal
 		} commands;

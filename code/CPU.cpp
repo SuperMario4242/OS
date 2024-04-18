@@ -191,6 +191,44 @@ namespace learn2024{
 			cmdJMP(arg);
 		}
 	}
+	
+	
+	void CPU::Commands::cmdDS (char arg[5]){
+	//	char tmp[ONE_WORD_SIZE];
+		unsigned long int addrStart = hexToInt(arg, VM_ADDRESS_SIZE);
+		char bias = hexToInt(&arg[4], 1);
+		char stack[ONE_WORD_SIZE];
+		cpu->memory->getWord(cpu->registers.SP, stack);
+		unsigned long int limit = hexToInt(stack, ONE_WORD_SIZE);
+		std::cout << "in DS limit: " << limit << "\n";
+		char currentWord[ONE_WORD_SIZE];
+		unsigned long int currentCharacterAddr = addrStart + bias;
+		cpu->memory->getWord(arg, currentWord);
+		if (bias < ONE_WORD_SIZE){
+			for (int k = 0 + bias; k < ONE_WORD_SIZE && currentCharacterAddr < addrStart + bias + limit; ++k){
+				std::cout << currentWord[k];
+				++currentCharacterAddr;
+			}
+		} else {
+			hexAdd(arg, VM_ADDRESS_SIZE, 1);
+			cpu->memory->getWord(arg, currentWord);
+			for (int k = 0 + bias - ONE_WORD_SIZE; k < ONE_WORD_SIZE && currentCharacterAddr < addrStart + bias + limit; ++k){
+				std::cout << currentWord[k];
+				++currentCharacterAddr;
+			}
+		}
+		while (currentCharacterAddr < addrStart + bias + limit){
+			hexAdd(arg, VM_ADDRESS_SIZE, 1);
+			cpu->memory->getWord(arg, currentWord);
+			for (int k = 0; k < ONE_WORD_SIZE && currentCharacterAddr < addrStart + bias + limit; ++k){
+				std::cout << currentWord[k];
+				++currentCharacterAddr;
+			}
+		}
+		std::cout << std::endl;
+		return;
+
+	}
 }
 /*
 std::string CPU::programCounterToString()const{
