@@ -177,7 +177,7 @@ namespace learn2024{
 	}
 	void CPU::Commands::cmdJMP (char arg[4]){
 		
-		if(isithex(arg)){
+		if(isithex(arg,4)){
 			simpleCharCopy(arg, cpu->registers.PC, VM_ADDRESS_SIZE);
 
 		}
@@ -189,7 +189,7 @@ namespace learn2024{
 	}
 	void CPU::Commands::cmdJMPB(char arg[4]){
 
-		if(isithex(arg)){
+		if(isithex(arg,4)){
 			if (cpu->registers.status.carry){
 				cmdJMP(arg);
 			}
@@ -204,7 +204,7 @@ namespace learn2024{
 	}
 	void CPU::Commands::cmdJMPE(char arg[4]){
 
-		if(isithex(arg)){
+		if(isithex(arg,4)){
 			if (cpu->registers.status.zero){
 				cmdJMP(arg);
 			}
@@ -219,7 +219,7 @@ namespace learn2024{
 
 
 	void CPU::Commands:: cmdJAE(char arg[4]){
-		if(isithex(arg)){
+		if(isithex(arg,4)){
 			if (!cpu->registers.status.carry){
 				cmdJMP(arg);
 			}
@@ -234,7 +234,7 @@ namespace learn2024{
 
 
 	void CPU::Commands:: cmdJNE(char arg[4]){
-		if(isithex(arg)){
+		if(isithex(arg,4)){
 			if (!cpu->registers.status.zero){
 				cmdJMP(arg);
 			}
@@ -247,7 +247,7 @@ namespace learn2024{
 	}
 
 	void CPU::Commands:: cmdJBE(char arg[4]){
-		if(isithex(arg)){
+		if(isithex(arg,4)){
 			if (cpu->registers.status.zero && cpu->registers.status.carry){
 				cmdJMP(arg);
 			}
@@ -262,7 +262,7 @@ namespace learn2024{
 	}
 
 	void CPU::Commands:: cmdJMPA(char arg[4]){
-		if(isithex(arg)){
+		if(isithex(arg,4)){
 			if (cpu->registers.status.carry){
 				cmdJMP(arg);
 			}
