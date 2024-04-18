@@ -89,6 +89,15 @@ namespace learn2024{
 		unsigned long int n2 = hexToInt(num2, size);
 		return n1 == n2;
 	}
+
+	bool isithex(char num[8],int size ) {
+        for (int i = 0; i < size; i++) {
+            if ((num[i] > 47 && num[i] < 58) || ( num[i] > 96 && num[i] < 102) ) {
+                continue;
+            }
+            return false;
+        }
+    } 
 	
 	void hexAdd(char hex[], int hexSize, int num){
 	//	std::cout << "I am here81" << std::endl;

@@ -22,6 +22,7 @@ namespace learn2024{
 	bool hexLess(char num1[], char num2[], int size);
 	bool hexEqual(char num1[], char num2[], int size);
 	void hexAdd(char hex[], int hexSize, int num);
+	bool isithex(char num[8],int size);
 }
 #ifdef DEBUG_1233546_CUSTOM_PROJECT
 #include "FuncsAndDefs.cpp"

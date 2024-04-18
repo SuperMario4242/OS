@@ -259,7 +259,7 @@ namespace learn2024{
 
 		
 	}
-	}
+	
 
 	void CPU::Commands:: cmdJMPA(char arg[4]){
 		if(isithex(arg,4)){
