@@ -182,7 +182,7 @@ namespace learn2024{
 
 		}
 		else{
-			//TODO
+			std::cout<<"Not a hex "<<std::endl;
 		}
 				
 
@@ -196,7 +196,7 @@ namespace learn2024{
 
 		}
 		else{
-			//TODO
+			std::cout<<"Not a hex "<<std::endl;
 		}
 		
 			
@@ -211,7 +211,7 @@ namespace learn2024{
 
 		}
 		else{
-			//TODO
+			std::cout<<"Not a hex "<<std::endl;
 		}
 		
 		
@@ -241,7 +241,7 @@ namespace learn2024{
 
 		}
 		else{
-			//TODO
+			std::cout<<"Not a hex "<<std::endl;
 		}
 		
 	}
@@ -254,7 +254,7 @@ namespace learn2024{
 
 		}
 		else{
-			//TODO
+			std::cout<<"Not a hex "<<std::endl;
 		}
 
 		
@@ -269,7 +269,7 @@ namespace learn2024{
 
 		}
 		else{
-			//TODO
+			std::cout<<"Not a hex "<<std::endl;
 		}
 		
 	}

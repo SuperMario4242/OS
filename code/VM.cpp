@@ -52,7 +52,8 @@ namespace learn2024{
 						this->cpu->commands.cmdPSH(&current.txt[4]);
 					}
 				} else {
-					// TODO invalid command
+					std::cout<<"Bad command "<<std::endl;
+					break;
 				}
 				
 				std::cout << "PS registered" << std::endl;
@@ -88,7 +89,8 @@ namespace learn2024{
 				if(current.txt[2] == 'E'){
 					this->cpu->commands.cmdJNE(&current.txt[4]);
 				}else{
-					//TODO
+					std::cout<<"Bad command "<<std::endl;
+					break;
 				}
 			
 				std::cout << "JN registered" << std::endl;
@@ -117,7 +119,8 @@ namespace learn2024{
 				if(current.txt[2] == 'E'){
 					this->cpu->commands.cmdJAE(&current.txt[4]);
 				}else{
-					//TODO
+					std::cout<<"Bad command "<<std::endl;
+					break;
 				}
 			
 				std::cout << "JA registered" << std::endl;
@@ -126,7 +129,8 @@ namespace learn2024{
 				if(current.txt[2] == 'E'){
 					this->cpu->commands.cmdJBE(&current.txt[4]);
 				}else{
-					//TODO
+					std::cout<<"Bad command "<<std::endl;
+					break;
 				}
 				std::cout << "JB registered" << std::endl;
 				break;
