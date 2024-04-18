@@ -7,14 +7,14 @@ namespace learn2024{
 	/*void VM::startMachine(VirtualMemory mem){
 		std::cout << "lalala123456\n";
 	}*/
-
+	
 	void VM::setCpu(CPU *cpu){
 		this->cpu = cpu;
 	}
 	bool VM::runCommand(char word[ONE_WORD_SIZE]){
 		std::cout << "pause..";
 		char temp[9];
-
+		
 		std::cin.getline(temp, 9);
 //		>> temp;
 		if (temp[0] == 'n'){
@@ -23,7 +23,7 @@ namespace learn2024{
 		for (int i = 0; i < ONE_WORD_SIZE; ++i){
 			current.txt[i] = temp[i];
 		}// interrupto apdorojimai per SI(!!!)
-
+		
 		std::cout << "get command:\n";
 		for (int i = 0; i < ONE_WORD_SIZE; ++i){
 			std::cout <<  temp[i];
@@ -54,7 +54,7 @@ namespace learn2024{
 				} else {
 					// TODO invalid command
 				}
-
+				
 				std::cout << "PS registered" << std::endl;
 				break;
 			case constTwoLettersToShort("PO"):
@@ -90,7 +90,7 @@ namespace learn2024{
 				}else{
 					//TODO
 				}
-
+			
 				std::cout << "JN registered" << std::endl;
 				break;
 			case constTwoLettersToShort("JM"):
@@ -110,7 +110,7 @@ namespace learn2024{
 				} else {
 					// TODO invalid command
 				}
-
+	
 				std::cout << "JM registered" << std::endl;
 				break;
 			case constTwoLettersToShort("JA"):
@@ -119,7 +119,7 @@ namespace learn2024{
 				}else{
 					//TODO
 				}
-
+			
 				std::cout << "JA registered" << std::endl;
 				break;
 			case constTwoLettersToShort("JB"):
@@ -144,14 +144,14 @@ namespace learn2024{
 				std::cout << "nothing registered" << std::endl;
 				break;
 		}
-
+		
 		if (needIncrementCounter){ // <- move to virtual_machine
 			hexAdd(this->cpu->registers.PC, VM_ADDRESS_SIZE, 1);
 		} else {
 			// what to do in that case (?)
 		} 
-
-
+		
+		
 		return false;
 	}
 }
