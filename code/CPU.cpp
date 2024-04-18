@@ -176,22 +176,104 @@ namespace learn2024{
 		
 	}
 	void CPU::Commands::cmdJMP (char arg[4]){
-			// TODO add hex check
-		simpleCharCopy(arg, cpu->registers.PC, VM_ADDRESS_SIZE);
+		
+		if(isithex(arg)){
+			simpleCharCopy(arg, cpu->registers.PC, VM_ADDRESS_SIZE);
+
+		}
+		else{
+			//TODO
+		}
+				
+
 	}
 	void CPU::Commands::cmdJMPB(char arg[4]){
-			// TODO add hex check
-		if (cpu->registers.status.carry){
-			cmdJMP(arg);
+
+		if(isithex(arg)){
+			if (cpu->registers.status.carry){
+				cmdJMP(arg);
+			}
+
 		}
+		else{
+			//TODO
+		}
+		
+			
+		
 	}
 	void CPU::Commands::cmdJMPE(char arg[4]){
-			// TODO add hex check
-		if (cpu->registers.status.zero){
-			cmdJMP(arg);
+
+		if(isithex(arg)){
+			if (cpu->registers.status.zero){
+				cmdJMP(arg);
+			}
+
 		}
+		else{
+			//TODO
+		}
+		
+		
 	}
-	
+
+
+	void CPU::Commands:: cmdJAE(char arg[4]){
+		if(isithex(arg)){
+			if (!cpu->registers.status.carry){
+				cmdJMP(arg);
+			}
+
+		}
+		else{
+			//TODO
+		}
+
+			
+	}
+
+
+	void CPU::Commands:: cmdJNE(char arg[4]){
+		if(isithex(arg)){
+			if (!cpu->registers.status.zero){
+				cmdJMP(arg);
+			}
+
+		}
+		else{
+			//TODO
+		}
+		
+	}
+
+	void CPU::Commands:: cmdJBE(char arg[4]){
+		if(isithex(arg)){
+			if (cpu->registers.status.zero && cpu->registers.status.carry){
+				cmdJMP(arg);
+			}
+
+		}
+		else{
+			//TODO
+		}
+
+		
+	}
+	}
+
+	void CPU::Commands:: cmdJMPA(char arg[4]){
+		if(isithex(arg)){
+			if (cpu->registers.status.carry){
+				cmdJMP(arg);
+			}
+
+		}
+		else{
+			//TODO
+		}
+		
+	}
+
 	
 	void CPU::Commands::cmdDS (char arg[5]){
 	//	char tmp[ONE_WORD_SIZE];
