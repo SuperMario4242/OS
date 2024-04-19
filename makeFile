@@ -4,8 +4,10 @@ output = out.exe
 code = code/
 objects = objects/
 
-$(output): $(objects)$(input).o $(objects)CPU.o $(objects)FuncsAndDefs.o $(objects)RM.o $(objects)VirtualMemory.o $(objects)VM.o 
-	g++ -std=c++11 $(objects)$(input).o $(objects)CPU.o $(objects)FuncsAndDefs.o $(objects)RM.o $(objects)VirtualMemory.o $(objects)VM.o -o $(output)
+$(output): $(objects)$(input).o $(objects)ChannelDevice.o $(objects)CPU.o $(objects)FuncsAndDefs.o $(objects)RM.o $(objects)VirtualMemory.o $(objects)VM.o 
+	g++ -std=c++11 $(objects)$(input).o $(objects)ChannelDevice.o $(objects)CPU.o $(objects)FuncsAndDefs.o $(objects)RM.o $(objects)VirtualMemory.o $(objects)VM.o -o $(output)
+$(objects)ChannelDevice.o: $(code)ChannelDevice.cpp
+	g++ -std=c++11 -c $(code)ChannelDevice.cpp  -o $(objects)ChannelDevice.o
 $(objects)CPU.o: $(code)CPU.cpp
 	g++ -std=c++11 -c $(code)CPU.cpp  -o $(objects)CPU.o
 $(objects)FuncsAndDefs.o: $(code)FuncsAndDefs.cpp

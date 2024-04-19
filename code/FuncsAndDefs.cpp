@@ -26,6 +26,15 @@ namespace learn2024{
 	//	std::cout << "some int:" << dec << " lala\n";
 		return dec;
 	}
+	
+	bool isithex(char num[8],int size ) {
+        for (int i = 0; i < size; i++) {
+            if ((num[i] > 47 && num[i] < 58) || ( num[i] > 96 && num[i] < 102) ) {
+                continue;
+            }
+            return false;
+        }
+    } 
 
 	void intToHex(unsigned long int num, int hexSize, char placeForHex[]){
 		//std::cout << "intToHex1" << std::endl;

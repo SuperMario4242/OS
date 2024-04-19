@@ -72,7 +72,7 @@ namespace learn2024{
 		unsigned long int n2 = hexToInt(word2, ONE_WORD_SIZE);
 		
 		unsigned long int result = n1 + n2;
-		
+	//	std::cout << "ADDs: " << n1 << " + " << n2 << std::endl;
 		if (result < n1){
 			cpu->registers.status.carry = 1;
 		} else {
@@ -118,9 +118,67 @@ namespace learn2024{
 		cpu->memory->setWord(cpu->registers.SP, word1);
 	}
 	void CPU::Commands::cmdMULs(){
+		char tempStackPointer[VM_ADDRESS_SIZE];
+		simpleCharCopy(cpu->registers.SP, tempStackPointer, VM_ADDRESS_SIZE);
+		char word1[ONE_WORD_SIZE];
+		cpu->memory->getWord(tempStackPointer, word1);
+										// TODO add hex check
+													// TODO add hex compare
+		hexAdd(tempStackPointer, VM_ADDRESS_SIZE, -1); // TODO (TO_CHECK) <-- attention will be required
 		
+		char word2[ONE_WORD_SIZE];
+		cpu->memory->getWord(tempStackPointer, word2);
+		
+		unsigned long int n1 = hexToInt(word1, ONE_WORD_SIZE);
+		unsigned long int n2 = hexToInt(word2, ONE_WORD_SIZE);
+		
+		unsigned long int result = n2 * n1;
+		if (n1 != 0 && n2 > ULONG_MAX / n1) {		
+			cpu->registers.status.carry = 1;
+		} else {
+			cpu->registers.status.carry = 0;
+		}
+		if (result == 0){
+			cpu->registers.status.zero = 1;
+		} else {
+			cpu->registers.status.zero = 0;
+		}
+		intToHex(result, ONE_WORD_SIZE, word1);
+		cpu->memory->setWord(cpu->registers.SP, word1);
 	}
-	void CPU::Commands::cmdDIVs(){}
+	void CPU::Commands::cmdDIVs(){
+		char tempStackPointer[VM_ADDRESS_SIZE];
+		simpleCharCopy(cpu->registers.SP, tempStackPointer, VM_ADDRESS_SIZE);
+		char word1[ONE_WORD_SIZE];
+		cpu->memory->getWord(tempStackPointer, word1);
+										// TODO add hex check
+													// TODO add hex compare
+		hexAdd(tempStackPointer, VM_ADDRESS_SIZE, -1); // TODO (TO_CHECK) <-- attention will be required
+		
+		char word2[ONE_WORD_SIZE];
+		cpu->memory->getWord(tempStackPointer, word2);
+		
+		unsigned long int n1 = hexToInt(word1, ONE_WORD_SIZE);
+		unsigned long int n2 = hexToInt(word2, ONE_WORD_SIZE);
+		
+		unsigned long int resultDivision = n2 / n1;
+		unsigned long int resultRemainder = n2 % n1;
+		
+		/*if (n2 < n1){
+			cpu->registers.status.carry = 1;
+		} else {
+			cpu->registers.status.carry = 0;
+		}*/
+		if (resultDivision == 0){
+			cpu->registers.status.zero = 1;
+		} else {
+			cpu->registers.status.zero = 0;
+		}
+		intToHex(resultRemainder, ONE_WORD_SIZE, word1);
+		intToHex(resultDivision, ONE_WORD_SIZE, word2);
+		cpu->memory->setWord(cpu->registers.SP, word1);
+		cpu->memory->setWord(tempStackPointer, word2);
+	}
 	
 	void CPU::Commands::cmdPSHa(char arg[4]){
 		// TODO add hex compare
@@ -168,6 +226,100 @@ namespace learn2024{
 		}
 	}
 	
+	void CPU::Commands::cmdAND(){
+		char tempStackPointer[VM_ADDRESS_SIZE];
+
+		simpleCharCopy(cpu->registers.SP, tempStackPointer, VM_ADDRESS_SIZE);
+
+		char word1[ONE_WORD_SIZE];
+		cpu->memory->getWord(tempStackPointer, word1);
+		if (isithex(word1,ONE_WORD_SIZE)){
+			cpu->registers.SI = 1;
+		}
+		hexAdd(tempStackPointer, VM_ADDRESS_SIZE, -1); // TODO (TO_CHECK) <-- attention will be required
+		
+		char word2[ONE_WORD_SIZE];
+		cpu->memory->getWord(tempStackPointer, word2);
+		if (isithex(word2,ONE_WORD_SIZE)){
+			cpu->registers.SI = 1;
+		}
+		unsigned long int n1 = hexToInt(word1, ONE_WORD_SIZE);
+		unsigned long int n2 = hexToInt(word2, ONE_WORD_SIZE);
+		
+		unsigned long int result = n1&n2;
+
+		intToHex(result, ONE_WORD_SIZE, word1);
+		cpu->memory->setWord(cpu->registers.SP, word1);
+	}
+	void CPU::Commands::cmdOR(){
+		char tempStackPointer[VM_ADDRESS_SIZE];
+
+		simpleCharCopy(cpu->registers.SP, tempStackPointer, VM_ADDRESS_SIZE);
+
+		char word1[ONE_WORD_SIZE];
+		cpu->memory->getWord(tempStackPointer, word1);
+		if (isithex(word1,ONE_WORD_SIZE)){
+			cpu->registers.SI = 1;
+		}
+		hexAdd(tempStackPointer, VM_ADDRESS_SIZE, -1); // TODO (TO_CHECK) <-- attention will be required
+		
+		char word2[ONE_WORD_SIZE];
+		cpu->memory->getWord(tempStackPointer, word2);
+		if (isithex(word2,ONE_WORD_SIZE)){
+			cpu->registers.SI = 1;
+		}
+		unsigned long int n1 = hexToInt(word1, ONE_WORD_SIZE);
+		unsigned long int n2 = hexToInt(word2, ONE_WORD_SIZE);
+		
+		unsigned long int result = n1|n2;
+
+		intToHex(result, ONE_WORD_SIZE, word1);
+		cpu->memory->setWord(cpu->registers.SP, word1);
+	}
+	void CPU::Commands::cmdXOR(){
+		char tempStackPointer[VM_ADDRESS_SIZE];
+
+		simpleCharCopy(cpu->registers.SP, tempStackPointer, VM_ADDRESS_SIZE);
+
+		char word1[ONE_WORD_SIZE];
+		cpu->memory->getWord(tempStackPointer, word1);
+		if (isithex(word1,ONE_WORD_SIZE)){
+			cpu->registers.SI = 1;
+		}
+		hexAdd(tempStackPointer, VM_ADDRESS_SIZE, -1); // TODO (TO_CHECK) <-- attention will be required
+		
+		char word2[ONE_WORD_SIZE];
+		cpu->memory->getWord(tempStackPointer, word2);
+		if (isithex(word2,ONE_WORD_SIZE)){
+			cpu->registers.SI = 1;
+		}
+		unsigned long int n1 = hexToInt(word1, ONE_WORD_SIZE);
+		unsigned long int n2 = hexToInt(word2, ONE_WORD_SIZE);
+		
+		unsigned long int result = n1^n2;
+
+		intToHex(result, ONE_WORD_SIZE, word1);
+		cpu->memory->setWord(cpu->registers.SP, word1);
+	}
+	void CPU::Commands::cmdNOT(){
+		char tempStackPointer[VM_ADDRESS_SIZE];
+
+		simpleCharCopy(cpu->registers.SP, tempStackPointer, VM_ADDRESS_SIZE);
+
+		char word1[ONE_WORD_SIZE];
+		cpu->memory->getWord(tempStackPointer, word1);
+		if (isithex(word1,ONE_WORD_SIZE)){
+			cpu->registers.SI = 1;
+		}
+		unsigned long int n1 = hexToInt(word1, ONE_WORD_SIZE);;
+		
+		unsigned long int result = ~n1;
+
+		intToHex(result, ONE_WORD_SIZE, word1);
+		cpu->memory->setWord(cpu->registers.SP, word1);
+	}
+	
+	
 	void CPU::Commands::cmdCMP (){
 		char tmp[ONE_WORD_SIZE];
 		cpu->memory->getWord(cpu->registers.SP, tmp);
@@ -176,21 +328,105 @@ namespace learn2024{
 		
 	}
 	void CPU::Commands::cmdJMP (char arg[4]){
-			// TODO add hex check
-		simpleCharCopy(arg, cpu->registers.PC, VM_ADDRESS_SIZE);
+		
+		if(isithex(arg,4)){
+			simpleCharCopy(arg, cpu->registers.PC, VM_ADDRESS_SIZE);
+
+		}
+		else{
+			std::cout<<"Not a hex "<<std::endl;
+		}
+				
+
 	}
 	void CPU::Commands::cmdJMPB(char arg[4]){
-			// TODO add hex check
-		if (cpu->registers.status.carry){
-			cmdJMP(arg);
+
+		if(isithex(arg,4)){
+			if (cpu->registers.status.carry){
+				cmdJMP(arg);
+			}
+
 		}
+		else{
+			std::cout<<"Not a hex "<<std::endl;
+		}
+		
+			
+		
 	}
 	void CPU::Commands::cmdJMPE(char arg[4]){
-			// TODO add hex check
-		if (cpu->registers.status.zero){
-			cmdJMP(arg);
+
+		if(isithex(arg,4)){
+			if (cpu->registers.status.zero){
+				cmdJMP(arg);
+			}
+
 		}
+		else{
+			std::cout<<"Not a hex "<<std::endl;
+		}
+		
+		
 	}
+
+
+	void CPU::Commands:: cmdJAE(char arg[4]){
+		if(isithex(arg,4)){
+			if (!cpu->registers.status.carry){
+				cmdJMP(arg);
+			}
+
+		}
+		else{
+			//TODO
+		}
+
+			
+	}
+
+
+	void CPU::Commands:: cmdJNE(char arg[4]){
+		if(isithex(arg,4)){
+			if (!cpu->registers.status.zero){
+				cmdJMP(arg);
+			}
+
+		}
+		else{
+			std::cout<<"Not a hex "<<std::endl;
+		}
+		
+	}
+
+	void CPU::Commands:: cmdJBE(char arg[4]){
+		if(isithex(arg,4)){
+			if (cpu->registers.status.zero || cpu->registers.status.carry){
+				cmdJMP(arg);
+			}
+
+		}
+		else{
+			std::cout<<"Not a hex "<<std::endl;
+		}
+
+		
+	}
+	
+
+	void CPU::Commands:: cmdJMPA(char arg[4]){
+		if(isithex(arg,4)){
+			if (!cpu->registers.status.carry && !cpu->registers.status.zero){
+				cmdJMP(arg);
+			}
+
+		}
+		else{
+			std::cout<<"Not a hex "<<std::endl;
+		}
+		
+	}
+
+	
 	
 	
 	void CPU::Commands::cmdDS (char arg[5]){
@@ -229,6 +465,8 @@ namespace learn2024{
 		return;
 
 	}
+	
+	
 }
 /*
 std::string CPU::programCounterToString()const{

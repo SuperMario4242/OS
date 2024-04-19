@@ -7,9 +7,11 @@
 #include <string>
 #include <stdio.h>
 #include <iostream>
-
+#include <climits> 
+#include <fstream>
 
 namespace learn2024{
+	using namespace std;
 	class CPU;
 	class VM;
 	class VirtualMemory;
@@ -18,6 +20,7 @@ namespace learn2024{
 #include "VirtualMemory.hpp"
 #include "CPU.hpp"
 #include "VM.hpp"
+#include "ChannelDevice.hpp"
 
 
 

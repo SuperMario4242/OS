@@ -32,6 +32,9 @@ using namespace std;
 using namespace learn2024;
 
 int main(){
+//	ChannelDevice cd;
+	//cd.XCHG();
+	//cout << "ULONG_MAX" << ULONG_MAX << endl;
     VM vm;
 //	v.startMachine();
 	VirtualMemory mem;

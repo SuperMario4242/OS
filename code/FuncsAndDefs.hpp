@@ -17,7 +17,8 @@
 namespace learn2024{
 	void simpleCharCopy(char source[], char destination[], int size);
 	unsigned long int hexToInt(char hex[], int hexSize);
-
+	bool isithex(char num[8],int size );
+	
 	void intToHex(unsigned long int num, int hexSize, char placeForHex[]);
 	bool hexLess(char num1[], char num2[], int size);
 	bool hexEqual(char num1[], char num2[], int size);

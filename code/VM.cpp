@@ -32,15 +32,36 @@ namespace learn2024{
 		bool needIncrementCounter = true;
 		switch (twoLettersToShort(current.txt)) {
 			case constTwoLettersToShort("AD"):
+				if (current.txt[2] == 'D'){
+					if (current.txt[3] == 's'){
+					//	std::cout << "AD enabled" << std::endl;
+						this->cpu->commands.cmdADDs();
+					}
+				}
 				std::cout << "AD registered" << std::endl;
 				break;
 			case constTwoLettersToShort("SU"):
+				if (current.txt[2] == 'B'){
+					if (current.txt[3] == 's'){
+						this->cpu->commands.cmdSUBs();
+					}
+				}
 				std::cout << "SU registered" << std::endl;
 				break;
 			case constTwoLettersToShort("MU"):
+				if (current.txt[2] == 'L'){
+					if (current.txt[3] == 's'){
+						this->cpu->commands.cmdMULs();
+					}
+				}
 				std::cout << "MU registered" << std::endl;
 				break;
 			case constTwoLettersToShort("DI"):
+				if (current.txt[2] == 'V'){
+					if (current.txt[3] == 's'){
+						this->cpu->commands.cmdDIVs();
+					}
+				}
 				std::cout << "DI registered" << std::endl;
 				break;
 			case constTwoLettersToShort("PS"):
@@ -70,27 +91,74 @@ namespace learn2024{
 				std::cout << "TH registered" << std::endl;
 				break;
 			case constTwoLettersToShort("AN"):
+				this->cpu->commands.cmdAND();
 				std::cout << "AN registered" << std::endl;
 				break;
 			case constTwoLettersToShort("OR"):
+				this->cpu->commands.cmdOR();
 				std::cout << "OR registered" << std::endl;
 				break;
 			case constTwoLettersToShort("XO"):
+				this->cpu->commands.cmdXOR();
 				std::cout << "XO registered" << std::endl;
 				break;
 			case constTwoLettersToShort("NO"):
+				this->cpu->commands.cmdNOT();
 				std::cout << "NO registered" << std::endl;
 				break;
 			case constTwoLettersToShort("CM"):
+				if(current.txt[2] == 'P'){
+					this->cpu->commands.cmdCMP();
+				}
 				std::cout << "CM registered" << std::endl;
 				break;
 			case constTwoLettersToShort("JN"):
+				if(current.txt[2] == 'E'){
+					this->cpu->commands.cmdJNE(&current.txt[4]);
+				}else{
+					std::cout<<"Bad command "<<std::endl;
+					break;
+				}
+			
 				std::cout << "JN registered" << std::endl;
 				break;
+			case constTwoLettersToShort("JM"):
+				if (current.txt[2] == 'P'){
+			//		std::cout <<  "third";
+					if (current.txt[3] == 'B'){
+						this->cpu->commands.cmdJMPB(&current.txt[4]);
+					} else if(current.txt[3] == 'E') {
+						this->cpu->commands.cmdJMPE(&current.txt[4]);
+					}else if(current.txt[3] == ' '){
+						this->cpu->commands.cmdJMP(&current.txt[4]);
+					}
+					else{
+						// TODO invalid command
+
+					}
+				} else {
+					// TODO invalid command
+				}
+	
+				std::cout << "JM registered" << std::endl;
+				break;
 			case constTwoLettersToShort("JA"):
+				if(current.txt[2] == 'E'){
+					this->cpu->commands.cmdJAE(&current.txt[4]);
+				}else{
+					std::cout<<"Bad command "<<std::endl;
+					break;
+				}
+			
 				std::cout << "JA registered" << std::endl;
 				break;
 			case constTwoLettersToShort("JB"):
+				if(current.txt[2] == 'E'){
+					this->cpu->commands.cmdJBE(&current.txt[4]);
+				}else{
+					std::cout<<"Bad command "<<std::endl;
+					break;
+				}
 				std::cout << "JB registered" << std::endl;
 				break;
 			case constTwoLettersToShort("DS"):

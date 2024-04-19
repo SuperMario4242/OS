@@ -4,6 +4,7 @@
 #define SOME_CPU_HPP
 #include "RM.hpp"
 
+
 namespace learn2024{
 	
 	class CPU{
@@ -49,7 +50,17 @@ namespace learn2024{
 			void cmdJMP (char arg[4]);
 			void cmdJMPB(char arg[4]);
 			void cmdJMPE(char arg[4]);
+			
+			void cmdJAE(char arg[4]);
+			void cmdJNE(char arg[4]);
+			void cmdJBE(char arg[4]);
+			void cmdJMPA(char arg[4]);
+			
 			void cmdDS (char arg[5]);
+			void cmdAND();
+			void cmdOR();
+			void cmdXOR();
+			void cmdNOT();
 //		private:
 	//		void lalal
 		} commands;
