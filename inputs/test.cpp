@@ -32,14 +32,14 @@ using namespace std;
 using namespace learn2024;
 
 int main(){
-//	ChannelDevice cd;
+	ChannelDevice cd;
 	//cd.XCHG();
 	//cout << "ULONG_MAX" << ULONG_MAX << endl;
     VM vm;
 //	v.startMachine();
 	VirtualMemory mem;
 	CPU some(&mem);
-	RM machine(&some, &mem, &vm);
+	RM machine(&some, &mem, &vm, &cd);
 	
 //	cout << codeCurrent << endl;
 	
@@ -74,7 +74,7 @@ int main(){
 	cout << "st2:" << st << endl;
 
 	
-	cout << mem.toString(240);
+	cout << mem.toString(128);
 	
 	
     return 0;

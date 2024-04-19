@@ -13,6 +13,7 @@ namespace learn2024{
 		static int programCounterSize;
 		static int programPointerSize;
 		static int stackPointerSize;
+		
 		public:
 		struct {
 			char PC[4];
@@ -27,8 +28,9 @@ namespace learn2024{
 			unsigned char PI;
 			unsigned char SI;
 		} registers;
-		
+		ChannelDevice *channelDevice;
 	public:
+		
 		CPU();
 		CPU(VirtualMemory *memory);
 		
@@ -57,6 +59,9 @@ namespace learn2024{
 			void cmdJMPA(char arg[4]);
 			
 			void cmdDS (char arg[5]);
+			void cmdRD (char arg[5]);
+			void cmdDSu(char arg[5]);
+			void cmdRDu(char arg[5]);
 			void cmdAND();
 			void cmdOR();
 			void cmdXOR();

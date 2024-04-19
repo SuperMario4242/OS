@@ -15,6 +15,7 @@ namespace learn2024{
 	class CPU;
 	class VM;
 	class VirtualMemory;
+	class ChannelDevice;
 }
 #include "FuncsAndDefs.hpp"
 #include "VirtualMemory.hpp"
@@ -27,11 +28,12 @@ namespace learn2024{
 namespace learn2024{
 	class RM {
 	private:
+		
 		CPU *cpu;
 		VirtualMemory *virtual_memory;
 		VM *virtual_machine;
 	public:
-		RM(CPU *cpu, VirtualMemory *virtual_memory, VM *virtual_machine);
+		RM(CPU *cpu, VirtualMemory *virtual_memory, VM *virtual_machine, ChannelDevice *channelDevice);
 		void initialize();
 		void run();
 	};

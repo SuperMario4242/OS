@@ -230,24 +230,29 @@ namespace learn2024{
 		char tempStackPointer[VM_ADDRESS_SIZE];
 
 		simpleCharCopy(cpu->registers.SP, tempStackPointer, VM_ADDRESS_SIZE);
-
+		cout << "here.." << endl;
 		char word1[ONE_WORD_SIZE];
 		cpu->memory->getWord(tempStackPointer, word1);
-		if (isithex(word1,ONE_WORD_SIZE)){
+		cout << "here..1.5" << endl;
+		if (!isithex(word1,ONE_WORD_SIZE)){
 			cpu->registers.SI = 1;
+			return;
 		}
+		cout << "here..2" << endl;
 		hexAdd(tempStackPointer, VM_ADDRESS_SIZE, -1); // TODO (TO_CHECK) <-- attention will be required
 		
 		char word2[ONE_WORD_SIZE];
 		cpu->memory->getWord(tempStackPointer, word2);
-		if (isithex(word2,ONE_WORD_SIZE)){
+		if (!isithex(word2,ONE_WORD_SIZE)){
 			cpu->registers.SI = 1;
+			return;
 		}
+		cout << "here..3" << endl;
 		unsigned long int n1 = hexToInt(word1, ONE_WORD_SIZE);
 		unsigned long int n2 = hexToInt(word2, ONE_WORD_SIZE);
 		
 		unsigned long int result = n1&n2;
-
+		cout << "here..4" << endl;
 		intToHex(result, ONE_WORD_SIZE, word1);
 		cpu->memory->setWord(cpu->registers.SP, word1);
 	}
@@ -258,15 +263,17 @@ namespace learn2024{
 
 		char word1[ONE_WORD_SIZE];
 		cpu->memory->getWord(tempStackPointer, word1);
-		if (isithex(word1,ONE_WORD_SIZE)){
+		if (!isithex(word1,ONE_WORD_SIZE)){
 			cpu->registers.SI = 1;
+			return;
 		}
 		hexAdd(tempStackPointer, VM_ADDRESS_SIZE, -1); // TODO (TO_CHECK) <-- attention will be required
 		
 		char word2[ONE_WORD_SIZE];
 		cpu->memory->getWord(tempStackPointer, word2);
-		if (isithex(word2,ONE_WORD_SIZE)){
+		if (!isithex(word2,ONE_WORD_SIZE)){
 			cpu->registers.SI = 1;
+			return;
 		}
 		unsigned long int n1 = hexToInt(word1, ONE_WORD_SIZE);
 		unsigned long int n2 = hexToInt(word2, ONE_WORD_SIZE);
@@ -283,15 +290,17 @@ namespace learn2024{
 
 		char word1[ONE_WORD_SIZE];
 		cpu->memory->getWord(tempStackPointer, word1);
-		if (isithex(word1,ONE_WORD_SIZE)){
+		if (!isithex(word1,ONE_WORD_SIZE)){
 			cpu->registers.SI = 1;
+			return;
 		}
 		hexAdd(tempStackPointer, VM_ADDRESS_SIZE, -1); // TODO (TO_CHECK) <-- attention will be required
 		
 		char word2[ONE_WORD_SIZE];
 		cpu->memory->getWord(tempStackPointer, word2);
-		if (isithex(word2,ONE_WORD_SIZE)){
+		if (!isithex(word2,ONE_WORD_SIZE)){
 			cpu->registers.SI = 1;
+			return;
 		}
 		unsigned long int n1 = hexToInt(word1, ONE_WORD_SIZE);
 		unsigned long int n2 = hexToInt(word2, ONE_WORD_SIZE);
@@ -308,8 +317,9 @@ namespace learn2024{
 
 		char word1[ONE_WORD_SIZE];
 		cpu->memory->getWord(tempStackPointer, word1);
-		if (isithex(word1,ONE_WORD_SIZE)){
+		if (!isithex(word1,ONE_WORD_SIZE)){
 			cpu->registers.SI = 1;
+			return;
 		}
 		unsigned long int n1 = hexToInt(word1, ONE_WORD_SIZE);;
 		
@@ -429,7 +439,7 @@ namespace learn2024{
 	
 	
 	
-	void CPU::Commands::cmdDS (char arg[5]){
+	/*void CPU::Commands::cmdDS (char arg[5]){
 	//	char tmp[ONE_WORD_SIZE];
 		unsigned long int addrStart = hexToInt(arg, VM_ADDRESS_SIZE);
 		char bias = hexToInt(&arg[4], 1);
@@ -464,7 +474,67 @@ namespace learn2024{
 		std::cout << std::endl;
 		return;
 
+	}*/
+	
+	void CPU::Commands::cmdDS (char arg[5]){
+		//char tmp[ONE_WORD_SIZE];
+		if (!isithex(arg,5)){
+			cpu->registers.SI = 1;
+			return;
+		}
+		
+		unsigned long int addrStart = hexToInt(arg, VM_ADDRESS_SIZE);
+		char bias = hexToInt(&arg[4], 1);
+		char stack[ONE_WORD_SIZE];
+		this->cpu->memory->getWord(this->cpu->registers.SP, stack);
+		unsigned long int limit = hexToInt(stack, ONE_WORD_SIZE);
+		char src = CD_SRC_USER_MEM;
+		char srca[6];
+		for (int i = 0; i < 5; ++i){
+			srca[i+1] = arg[i];
+		}
+		char des = CD_DES_CONSOLE;
+		char desa[6] = {0,0,0,0,0,0};
+		char size[5];
+		for (int i = 0; i < 5; ++i){
+			size[i] = stack[i + ONE_WORD_SIZE - 5];
+		}
+		char mode = 1;
+		this->cpu->channelDevice->setRegisters(src, srca, des, desa, size, mode);
+		this->cpu->registers.PI = PI_WRITE_TO_CONSOLE_CODE;
+		
 	}
+	void CPU::Commands::cmdRD (char arg[5]){
+		//char tmp[ONE_WORD_SIZE];
+		if (!isithex(arg,5)){
+			cpu->registers.SI = 1;
+			return;
+		}
+		
+		unsigned long int addrStart = hexToInt(arg, VM_ADDRESS_SIZE);
+		char bias = hexToInt(&arg[4], 1);
+		char stack[ONE_WORD_SIZE];
+		this->cpu->memory->getWord(this->cpu->registers.SP, stack);
+		unsigned long int limit = hexToInt(stack, ONE_WORD_SIZE);
+		char src = CD_SRC_KEYBOARD;
+		char srca[6] = {0,0,0,0,0,0};
+		
+		char des = CD_DES_USER_MEM;
+		char desa[6];
+		for (int i = 0; i < 5; ++i){
+			desa[i+1] = arg[i];
+		}
+		
+		char size[5];
+		for (int i = 0; i < 5; ++i){
+			size[i] = stack[i + ONE_WORD_SIZE - 5];
+		}
+		char mode = 1;
+		this->cpu->channelDevice->setRegisters(src, srca, des, desa, size, mode);
+		this->cpu->registers.PI = PI_READ_FROM_KEYBOARD;
+	}
+	void CPU::Commands::cmdDSu(char arg[5]){}
+	void CPU::Commands::cmdRDu(char arg[5]){}
 	
 	
 }

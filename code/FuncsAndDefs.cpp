@@ -27,7 +27,7 @@ namespace learn2024{
 		return dec;
 	}
 	
-	bool isithex(char num[8],int size ) {
+/*	bool isithex(char num[8],int size ) {
         for (int i = 0; i < size; i++) {
             if ((num[i] > 47 && num[i] < 58) || ( num[i] > 96 && num[i] < 102) ) {
                 continue;
@@ -35,7 +35,7 @@ namespace learn2024{
             return false;
         }
     } 
-
+*/
 	void intToHex(unsigned long int num, int hexSize, char placeForHex[]){
 		//std::cout << "intToHex1" << std::endl;
 		unsigned long int hexMax = 1;
@@ -88,6 +88,17 @@ namespace learn2024{
 	//	std::cout << "intToHex69" << std::endl;
 
 	}
+	
+	bool isithex(char num[],int size ) {
+		for (int i = 0; i < size; i++) {
+			if ((num[i] > 47 && num[i] < 58) || ( num[i] > 96 && num[i] < 102) ) {
+				continue;
+			}
+			return false;
+		}
+		return true;
+	}
+	
 	bool hexLess(char num1[], char num2[], int size){
 		unsigned long int n1 = hexToInt(num1, size);
 		unsigned long int n2 = hexToInt(num2, size);

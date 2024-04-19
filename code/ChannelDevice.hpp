@@ -19,6 +19,7 @@ namespace learn2024{
 		} registers;
 		
 		public:
+		void setRegisters(char SRC, char SRCa[6], char DES, char DESa[6], char SZ[5], char MODE);
 		void setVirtualMemory(VirtualMemory * mem);
 		void XCHG();
 	};

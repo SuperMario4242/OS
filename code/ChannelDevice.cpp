@@ -6,62 +6,94 @@
 #include "ChannelDevice.hpp"
 
 namespace learn2024{
+	void ChannelDevice::setRegisters(char SRC, char SRCa[6], char DES, char DESa[6], char SZ[5], char MODE){
+		this->registers.SRC = SRC;
+		for (int i = 0; i < 6; ++i){
+			this->registers.SRCa[i] = SRCa[i];
+		}
+		this->registers.DES = DES;
+		for (int i = 0; i < 6; ++i){
+			this->registers.DESa[i] = DESa[i];
+		}
+		
+		for (int i = 0; i < 5; ++i){
+			this->registers.SZ[i] = SZ[i];
+		}
+		this->registers.MODE = MODE;
+	}
+	
 	void ChannelDevice::setVirtualMemory(VirtualMemory * mem){
 		this->userMem = mem;
 	}
 	
 	void ChannelDevice::XCHG(){
-		std::cout << "try exchange!!!" << std::endl;
+		std::cout << "ChannelDevice:exchange!" << std::endl;
 		SomeStream *inputStream;
 		SomeStream *outputStream;
-		switch (this->registers.SRC){
+		cout << "outputStream:" ;
+		switch (this->registers.DES){
 			case 1:{
-				inputStream = new UserStream(&this->registers.SRCa[1], this->userMem);
+				std::cout << "userStream" << std::endl;
+				outputStream = new UserStream(&this->registers.DESa[1], this->userMem);
 			break;}
 			case 2:{
-				inputStream = new SWAPstream(this->registers.SRCa);
+				std::cout << "SWAPstream" << std::endl;
+				outputStream = new SWAPstream(this->registers.DESa);
 			break;}
 			case 3:{
-				inputStream = new ConsoleStream();
+				std::cout << "ConsoleStream" << std::endl;
+				outputStream = new ConsoleStream();
 			break;}
 			case 4:{
+				std::cout << "SupervisorMem (notWorking)" << std::endl;
 				cerr << "Supervizor memory not supported yet!!!" << endl;
 				int a = 10/0;
 			break;}
 			default:
+				std::cout << "undefined" << std::endl;
 				cerr << "Invalid Source for channel device" << endl;
 				int a = 10/0;
 		}
-		
-		switch (this->registers.DES){
+		cout << "inputStream:" ;
+		switch (this->registers.SRC){
 			case 1:{
-				outputStream = new UserStream(&this->registers.SRCa[1], this->userMem);
+				std::cout << "userStream" << std::endl;
+				inputStream = new UserStream(&this->registers.SRCa[1], this->userMem);
 			break;}
 			case 2:{
-				outputStream = new SWAPstream(this->registers.DESa);
+				std::cout << "SWAPstream" << std::endl;
+				inputStream = new SWAPstream(this->registers.SRCa);
 			break;}
 			case 3:{
-				outputStream = new KeyboardStream();
+				cout << "KeyboardStream" << endl;
+				inputStream = new KeyboardStream();
 			break;}
 			case 4:{
+				std::cout << "SupervisorMem (notWorking)" << std::endl;
 				cerr << "Supervizor memory not supported yet!!!" << endl;
 				int a = 10/0;
 			break;}
 			case 5:{
-				outputStream = new HDDstream(this->registers.DESa);
+				std::cout << "HDDstream" << std::endl;
+				inputStream = new HDDstream(this->registers.DESa);
 			break;}
 			default:
+				std::cout << "undefined" << std::endl;
 				cerr << "Invalid Destination for channel device" << endl;
 				int a = 10/0;
 		}
 		
-		
+		//cout << "I am here" << endl;
 		if (this->registers.MODE == 1){
+		//	cout << "I am here1" << endl;
 			unsigned long int size = hexToInt(this->registers.SZ, VM_ADDRESS_SIZE+1);
 			for (unsigned long int i = 0; i < size; ++i){
 				char tmp;
 				*inputStream >> tmp;
+			//	cout << "inputCH:" << tmp << endl;
 				*outputStream << tmp;
+			//	cout << "here:" << endl;
+			//	cout << "i:" << i << endl;
 			}
 		} else {
 			char tmp;
@@ -163,9 +195,18 @@ namespace learn2024{
 	
 	UserStream::UserStream(char addr[5], VirtualMemory *memory){
 		for (int i = 0; i < 4; ++i){
-			this->userAddr[i] = addr[i+1];
+			this->userAddr[i] = addr[i];
 		}
-		int temp = hexToInt(&addr[5], 1);
+	//	cout << "addr[0] |" << addr[0] << "|" << endl;
+		
+		//cout << "userAddr" << this->userAddr << endl;
+		
+		//cout << "UserStream||we will here:";
+	//	for (int i = 0; i < 5; ++i) {
+		//	cout << addr[i];
+	//	}
+		//cout << "\n";
+		int temp = hexToInt(&addr[4], 1);
 		if (temp > 7) 
 			temp -= 8;
 		this->bias = temp;
@@ -174,26 +215,37 @@ namespace learn2024{
 		
 	}
 	UserStream& UserStream::operator>>(char &output){
+		//cout << "here" << endl;
 		if (this->bias < 8){
+		//	cout << "here1" << endl;
 			char word[8];
+		//	cout << "here2" << endl;
 			this->memory->getWord(this->userAddr, word);
 			output = word[bias];
-			++bias;
+			//cout << "here3 output:" << output << endl;
+			++this->bias;
 		} else {
 			char word[8]; 
 			hexAdd(this->userAddr, VM_ADDRESS_SIZE, 1);
 			this->bias -= 8;
 			this->memory->getWord(this->userAddr, word);
 			output = word[bias];
-			++bias;
+			++this->bias;
 		}
+		return *this;
 	}
 	UserStream& UserStream::operator<<(const char &input){
+	//	cout << "this->userAddr" << this->userAddr << endl;
 		if (this->bias < 8){
+		//	cout << "here1" << endl;
 			char word[8];
+		//	cout << "here2" << endl;
 			this->memory->getWord(this->userAddr, word);
+		//	cout << "here3" << endl;
 			word[bias] = input;
+		//	cout << "here4" << endl;
 			this->memory->setWord(this->userAddr, word);
+		//	cout << "here5" << endl;
 			++bias;
 		} else {
 			char word[8];
@@ -204,6 +256,7 @@ namespace learn2024{
 			this->memory->setWord(this->userAddr, word);
 			++bias;
 		}
+		return *this;
 	}
 	
 	

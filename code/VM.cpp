@@ -21,12 +21,12 @@ namespace learn2024{
 			return true;
 		}
 		for (int i = 0; i < ONE_WORD_SIZE; ++i){
-			current.txt[i] = temp[i];
+			current.txt[i] = word[i];
 		}// interrupto apdorojimai per SI(!!!)
 		
 		std::cout << "get command:\n";
 		for (int i = 0; i < ONE_WORD_SIZE; ++i){
-			std::cout <<  temp[i];
+			std::cout <<  word[i];
 		}
 		std::cout << "\n";
 		bool needIncrementCounter = true;
@@ -166,6 +166,7 @@ namespace learn2024{
 				std::cout << "DS registered" << std::endl;
 				break;
 			case constTwoLettersToShort("RD"):
+				this->cpu->commands.cmdRD(&current.txt[3]);
 				std::cout << "RD registered" << std::endl;
 				break;
 			case constTwoLettersToShort("HA"):
