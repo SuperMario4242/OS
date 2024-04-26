@@ -1,0 +1,25 @@
+____----// <- tuscias zodis
+____----// komentaras
+addABprg#NEW_PROGRAM
+Enter A:#DATA_SEGMENT
+Enter B:
+A + B = 
+PSH 0008#CODE_SEGMENT
+DS 00000
+PSH 0008
+RD 00030
+POP 0009
+DS 00010
+PSHa0009
+RD 00040
+POP 0009
+PSHa0003
+PSHa0004
+ADDs____
+POP 0005
+PSH 0008
+DS 00020
+DS 00050
+HALT____#NEW_PROGRAM_END // naujos programos pabaigos pozymis
+
+

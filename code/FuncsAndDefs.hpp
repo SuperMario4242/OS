@@ -22,14 +22,14 @@
 #define CD_DES_USER_MEM 1
 #define CD_DES_SWAP 2
 #define CD_DES_CONSOLE 3
-#define CD_SRC_SUPERVISOR 4
+#define CD_DES_SUPERVISOR 4
 
 #define PI_WRITE_TO_CONSOLE_CODE 2
 #define PI_READ_FROM_KEYBOARD 1
 
 
 namespace learn2024{
-	void simpleCharCopy(char source[], char destination[], int size);
+	void simpleCharCopy(const char source[], char destination[], int size);
 	unsigned long int hexToInt(char hex[], int hexSize);
 //	bool isithex(char num[8],int size );
 	

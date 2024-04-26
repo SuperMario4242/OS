@@ -479,11 +479,11 @@ namespace learn2024{
 	void CPU::Commands::cmdDS (char arg[5]){
 		//char tmp[ONE_WORD_SIZE];
 		if (!isithex(arg,5)){
-			cpu->registers.SI = 1;
+			cpu->registers.SI = 1; // 
 			return;
 		}
 		
-		unsigned long int addrStart = hexToInt(arg, VM_ADDRESS_SIZE);
+		unsigned long int addrStart = hexToInt(arg, VM_ADDRESS_SIZE); // <- RM viduje visas sitas dalykas
 		char bias = hexToInt(&arg[4], 1);
 		char stack[ONE_WORD_SIZE];
 		this->cpu->memory->getWord(this->cpu->registers.SP, stack);

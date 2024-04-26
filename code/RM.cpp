@@ -16,14 +16,47 @@ namespace learn2024{
 		virtual_machine->setCpu(cpu);
 	}
 	void RM::initialize(){
+		char bias = 0;
+		char src = CD_SRC_HDD;
+		char srca[] = "addA  ";
+		char des = CD_DES_SUPERVISOR;
+		char desa[] = "001000";
+		char size[] = "Bprg  ";
+		char mode = 3;
+		this->cpu->channelDevice->setRegisters(src, srca, des, desa, size, mode);
+		
+		this->cpu->channelDevice->XCHG();
+		char tmp[] = "00000100";
+		cout << "\ntmp1:" << tmp;
+		hexAdd(tmp, ONE_WORD_SIZE, 256);
+		cout << "tmp2:" << tmp << endl;
+		char addr[] = "00000100";
+		char addr2[] = "00010100";
+		for(int i = 0; i < 240/*128+112*/; ++i){
+		//	cout << "i: " << i << " from " << addr << " to " << addr2 << endl;
+			this->virtual_memory->moveBlock(addr, addr2, i);
+			hexAdd(addr, ONE_WORD_SIZE, 256);
+			hexAdd(addr2, ONE_WORD_SIZE, 256);
+		}
+		
+	/*	char bias = 0;
+		char src = CD_SRC_SUPERVISOR;
+		char srca[] = "001000";
+		char des = CD_DES_SUPERVISOR;
+		char desa[] = "101000";
+		char size[] =  "f1000";
+		char mode = 3;
+		
+		this->cpu->channelDevice->XCHG();
+		char pagingAddr[] = "00020100";*/
 		char dataCurrent[] = DATA_SEG_START_ADDR;
-		char data[3][9] = {"Enter A:",
+		/*char data[3][9] = {"Enter A:",
 							"Enter B:",
 							"A + B = "};
 		for (int i = 0; i < 3; ++i){
 			virtual_memory->setWord(dataCurrent, data[i]);
 			hexAdd(dataCurrent, VM_ADDRESS_SIZE, 1);
-		}
+		}*/
 		
 		char stackCurrent[] = STACK_ADDR;
 		for (int i = 0; i < VM_ADDRESS_SIZE; ++i){
@@ -35,7 +68,10 @@ namespace learn2024{
 			this->cpu->registers.PC[i] = codeCurrent[i];
 		}
 		
-		char code[17][9] = {"PSH 0008",
+		for (int i = 0; i < ONE_WORD_SIZE; ++i){
+			this->cpu->registers.PTR[i] = this->virtual_memory->pagingAddress[i];
+		}
+		/*char code[17][9] = {"PSH 0008",
 					"DS 00000",
 					"PSH 0008",
 					"RD 00030",
@@ -44,7 +80,6 @@ namespace learn2024{
 					"PSHa0009",
 					"RD 00040",
 					"POP 0009",
-				//	"POP 0009",
 					"PSHa0003",
 					"PSHa0004",
 					"ADDs____",
@@ -54,29 +89,11 @@ namespace learn2024{
 					"DS 00050",
 					"HALT____"
 					};
-					/*{"PSH 0008",
-					"DS 00000",
-					"PSH 000\\",
-					"RDu00030",
-					"POP 0009",
-					"DS 00010",
-					"PSHa0009",
-					"RDu00040",
-					"POP 0009",
-					"POP 0009",
-					"PSHa0003",
-					"PSHa0004",
-					"ADDs____",
-					"POP 0005",
-					"PSH 0008",
-					"DS 00020",
-					"DS 00050",
-					"HALT____"
-					};*/
+					
 		for (int i = 0; i < 18; ++i){
 			virtual_memory->setWord(codeCurrent, code[i]);
 			hexAdd(codeCurrent, VM_ADDRESS_SIZE, 1);
-		}
+		}*/
 		
 	}
 	void RM::run(){ // <- only run command and check for interrupts

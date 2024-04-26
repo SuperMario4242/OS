@@ -9,7 +9,7 @@
 #include <iostream>
 
 namespace learn2024{
-	void simpleCharCopy(char source[], char destination[], int size){
+	void simpleCharCopy(const char source[], char destination[], int size){
 		for (int i = 0; i < size; ++i){
 			destination[i] = source[i];
 		}

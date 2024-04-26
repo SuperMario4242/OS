@@ -69,16 +69,32 @@ namespace learn2024{
 		
 	};
 	
+	
+	class SupervisorStream : public SomeStream{
+		private:
+		RealMemory *memory;
+		char userAddr[8];
+		char bias;
+		public:
+		SupervisorStream(char addr[5], RealMemory *memory);
+		SupervisorStream& operator>>(char &output);
+		SupervisorStream& operator<<(const char &input);
+		
+	};
+	
 	class HDDstream : public SomeStream{
 		private:
-		char swapAddr[5];
+		char hddAddr[5];
 		char bias;
-		ifstream *inFile;
+		fstream *inFile;
 		string currentLine;
 		unsigned long int currentAddr;
+		unsigned long int dataSegRemain;
+		unsigned long int codeSegRemain;
+		char step; // 0 - search for program; 1 - in data segment; 2 - between data and code segment; 3 - in code segment; 4 - almost end; 5 - end
 		
 		public:
-		HDDstream(char addr[6]);
+		HDDstream(char programName1part[4], char programName2part[4]);
 		HDDstream& operator>>(char &output);
 		HDDstream& operator<<(const char &input);
 		~HDDstream();

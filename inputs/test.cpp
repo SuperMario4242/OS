@@ -37,17 +37,24 @@ int main(){
 	//cout << "ULONG_MAX" << ULONG_MAX << endl;
     VM vm;
 //	v.startMachine();
-	VirtualMemory mem;
-	CPU some(&mem);
-	RM machine(&some, &mem, &vm, &cd);
+	cout << "test" << endl;
+	RealMemory rmem;
+//	cout << "ttest" << endl;
+	
+	VirtualMemory vmem(&rmem, "00020100");
+	CPU some(&vmem);
+	cout << "test0" << endl;
+	RM machine(&some, &vmem, &vm, &cd);
 	
 //	cout << codeCurrent << endl;
 	
 //	cout << codeCurrent << endl;
-	
+	cout << "test1" << endl;
 	
 	
 	machine.initialize();
+	
+	cout << "test2" << endl;
 	machine.run();
 	
     cout << "Hello, world!" << endl;
@@ -73,9 +80,32 @@ int main(){
 	hexAdd(st, 2, 2);
 	cout << "st2:" << st << endl;
 
+	char addr[] = "00000100";
+//	cout << vmem.toString(addr, 50);
+	cout << rmem.toString(addr, 50);
+	cout << "-------------\n";
+	char addr2[] = "00008100";
+	cout << rmem.toString(addr2, 50);
+	cout << "-------------\n";
+	char addr3[] = "00010100";
+	cout << rmem.toString(addr3, 50);
+	cout << "-------------\n";
+	char addr4[] = "00018100";
+	cout << rmem.toString(addr4, 50);
+	cout << "-------------\n";
+	char addr5[] = "00020100";
+	cout << rmem.toString(addr5, 50);
 	
-	cout << mem.toString(128);
-	
+	cout << ",,,,,,,,,\n";
+	cout << "virtual memory: \n";
+	char addr6[] = "0000";
+	cout << vmem.toString(addr6, 50);
+	cout << ",,,,,,,,,\n";
+	char addr7[] = "8000";
+	cout << vmem.toString(addr7, 50);
+	cout << ",,,,,,,,,\n";
+	char addr8[] = "f000";
+	cout << vmem.toString(addr8, 50);
 	
     return 0;
 }

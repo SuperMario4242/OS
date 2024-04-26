@@ -16,8 +16,10 @@ namespace learn2024{
 	class VM;
 	class VirtualMemory;
 	class ChannelDevice;
+	class RealMemory;
 }
 #include "FuncsAndDefs.hpp"
+#include "RealMemory.hpp"
 #include "VirtualMemory.hpp"
 #include "CPU.hpp"
 #include "VM.hpp"
